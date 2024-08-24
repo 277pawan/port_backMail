@@ -33,8 +33,6 @@ app.get("/share", (req, res) => {
   </script>
 </head>
 <body>
-  <p>Redirecting to the product page...</p>
-  <p>If you are not redirected automatically, <a href="https://maxtech-delta.vercel.app/">click here</a>.</p>
 </body>
 </html>
 
