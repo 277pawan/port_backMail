@@ -1,17 +1,20 @@
 const express = require("express");
-const nodemailer = require("nodemailer")
+const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 const app = express();
 app.use(require('cors')());
 app.use(express.json());
-app.get("/", (req, resp) => {
-    resp.send("Hello")
-})
+
+app.get("/", (req, res) => {
+    res.send("Hello");
+});
+
 app.get('/share', (req, res) => {
     const imageurl = req.query.imageUrl;
     const text = req.query.text;
-    console.log(query)
+    console.log(req.query); // Fixed: log req.query to view the incoming query parameters
+
     if (imageurl) {
         // Serve HTML with OG meta tags
         res.send(`
@@ -19,7 +22,7 @@ app.get('/share', (req, res) => {
       <html lang="en">
       <head>
         <meta property="og:title" content="Facebook Share" />
-        <meta property="og:description" content="${text}" />
+        <meta property="og:description" content="${text || ''}" />
         <meta property="og:image" content="${imageurl}" />
         <meta property="og:url" content="https://cure-ten.vercel.app" />
       </head>
@@ -33,7 +36,7 @@ app.get('/share', (req, res) => {
     }
 });
 
-app.post("/sec", async (req, resp) => {
+app.post("/sec", async (req, res) => {
     const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 587,
@@ -43,29 +46,30 @@ app.post("/sec", async (req, resp) => {
             user: 'perry.pawan@rubicotech.in',
             pass: process.env.EMAIL_PASSWORD,
         },
-    })
+    });
+
     const mailoption = {
         from: req.body.email,
         to: 'bpawan277@gmail.com',
         subject: "277PAWAN",
         text: req.body.message,
     };
+
     transporter.sendMail(mailoption, (error, info) => {
         if (error) {
             console.log("Error: " + error.message);
-            return resp.status(500).json({ message: "Error sending email" }); // Send a JSON response for error
+            return res.status(500).json({ message: "Error sending email" });
         } else {
             console.log("Success: " + info.response);
-            return resp.status(200).json({ message: "Email Sent Successfully." }); // Send a JSON response for success
+            return res.status(200).json({ message: "Email Sent Successfully." });
         }
     });
-    resp.status(200).json({ message: "Email Sent Successfully." })
-})
+});
 
-// Endpoint to handle webhook events
 app.listen(3002, (err) => {
-    if (err)
+    if (err) {
         console.error(err);
-    else
+    } else {
         console.log("listening on port 3002");
+    }
 });
