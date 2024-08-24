@@ -9,7 +9,7 @@ app.get("/", (req, resp) => {
     resp.send("Hello")
 })
 app.get('/share', (req, res) => {
-    const imageurl = req.imageUrl;
+    const imageurl = req.query.imageUrl;
     const text = req.query.text;
     console.log(query)
     if (imageurl) {
