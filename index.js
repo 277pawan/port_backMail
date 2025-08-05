@@ -49,7 +49,7 @@ app.post("/sec", async (req, res) => {
         secure: false,
         requireTLS: true,
         auth: {
-            user: "pawan.bisht@predigle.com",
+            user: "bpawan277@gmail.com",
             pass: process.env.EMAIL_PASSWORD,
         },
     });
